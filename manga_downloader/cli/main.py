@@ -1,6 +1,7 @@
 # cli/main.py
 
 import typer
+import concurrent.futures
 from rich.console import Console
 from rich.theme import Theme
 from manga_downloader.core.scraper import MangaScraper
@@ -24,6 +25,7 @@ def download(
     output_dir: str = typer.Option(None, "--output-dir", help="Optional: Directory to save the downloaded manga. Defaults to a predefined path."),
     concurrency: int = typer.Option(5, "--concurrency", help="Optional: Maximum number of concurrent image downloads. Default is 5."),
     to_pdf: bool = typer.Option(False, "--to-pdf", help="Optional: Convert downloaded chapter to PDF format."),
+    delete_images: bool = typer.Option(False, "--delete-images", help="Optional: Delete images after converting to PDF."),
     verbose: bool = typer.Option(False, "--verbose", help="Optional: Enable verbose output for detailed progress and debugging."),
 ):
     """
@@ -55,11 +57,19 @@ def download(
         console.print("[warning]No chapters to download.[/warning]")
         return
 
-    for chapter_data in chapters_to_download:
-        console.print(f"[info]Downloading {manga_title} - {chapter_data['title']}[/info]")
-        downloader = MangaDownloader(manga_title, chapter_data['title'], chapter_data['url'], output_dir.strip('"') if output_dir else None, concurrency, to_pdf, verbose, console=console)
-        downloader.download_chapter()
-        console.print(f"[success]Finished downloading {chapter_data['title']}[/success]")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
+        futures = []
+        for chapter_data in chapters_to_download:
+            console.print(f"[info]Queueing {manga_title} - {chapter_data['title']} for download[/info]")
+            downloader = MangaDownloader(manga_title, chapter_data['title'], chapter_data['url'], output_dir.strip('"') if output_dir else None, concurrency, to_pdf, delete_images, verbose, console=console)
+            futures.append(executor.submit(downloader.download_chapter))
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                console.print(f"[danger]An error occurred during chapter download: {e}[/danger]")
+
     console.print("[success]All selected chapters downloaded![/success]")
 
 @app.command()

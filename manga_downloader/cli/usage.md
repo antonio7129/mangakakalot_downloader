@@ -31,6 +31,7 @@ python -m manga_downloader.cli.main download --manga-url "MANGA_URL" [OPTIONS]
 - `--output-dir`: (Optional) The directory where the downloaded manga will be saved. Defaults to a "downloads" folder in the current directory.
 - `--concurrency`: (Optional) The maximum number of concurrent image downloads. Defaults to 5.
 - `--to-pdf`: (Optional) Convert the downloaded chapter into a PDF file.
+- `--delete-images`: (Optional) Delete the downloaded images after converting to PDF. This option is only effective when used with `--to-pdf`.
 - `--verbose`: (Optional) Enable verbose output for more detailed information.
 
 ### Examples
@@ -48,3 +49,8 @@ python -m manga_downloader.cli.main download --manga-url "https://www.natomanga.
 #### Download chapters and convert to PDF
 ```bash
 python -m manga_downloader.cli.main download --manga-url "https://www.natomanga.com/manga/immortal-undertaker" --to-pdf
+```
+
+#### Download chapters, convert to PDF, and delete images
+```bash
+python -m manga_downloader.cli.main download --manga-url "https://www.natomanga.com/manga/immortal-undertaker" --to-pdf --delete-images

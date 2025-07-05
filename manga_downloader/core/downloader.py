@@ -19,12 +19,13 @@ custom_theme = Theme({
 console = Console(theme=custom_theme)
 
 class MangaDownloader:
-    def __init__(self, manga_title, chapter_title, chapter_url, output_dir=None, concurrency=5, to_pdf=False, verbose=False, console=console):
+    def __init__(self, manga_title, chapter_title, chapter_url, output_dir=None, concurrency=5, to_pdf=False, delete_images=False, verbose=False, console=console):
         self.manga_title = manga_title
         self.chapter_title = chapter_title
         self.chapter_url = chapter_url
         self.concurrency = concurrency
         self.to_pdf = to_pdf
+        self.delete_images = delete_images
         self.verbose = verbose
         self.console = console
         base_download_path = output_dir if output_dir else os.path.join(os.getcwd(), "downloads")
@@ -97,6 +98,8 @@ class MangaDownloader:
             self._save_metadata()
             if self.to_pdf:
                 self._convert_to_pdf()
+                if self.delete_images:
+                    self._delete_images()
             self.console.print("[success]Done![/success]")
 
     def _convert_to_pdf(self):
@@ -119,7 +122,16 @@ class MangaDownloader:
 
         pdf_path = os.path.join(self.download_dir, f"{self.manga_title} - {self.chapter_title}.pdf")
         try:
-            images[0].save(pdf_path, save_all=True, append_images=images[1:])
-            print(f"✅ Converted chapter to PDF: {pdf_path}")
+            images[0].save(pdf_path, save_all=True, append_images=images[1:], quality=100)
+            self.console.print(f"[success]Converted chapter to PDF: {pdf_path}[/success]")
         except Exception as e:
-            self.console.print(f"Failed to convert to PDF: {e}")
+            self.console.print(f"[danger]Failed to convert to PDF: {e}[/danger]")
+
+    def _delete_images(self):
+        image_paths = sorted([os.path.join(self.download_dir, f) for f in os.listdir(self.download_dir) if f.endswith(".png")])
+        for img_path in image_paths:
+            try:
+                os.remove(img_path)
+            except Exception as e:
+                self.console.print(f"[danger]Error deleting image {img_path}: {e}[/danger]")
+        self.console.print("[success]Deleted downloaded images.[/success]")
