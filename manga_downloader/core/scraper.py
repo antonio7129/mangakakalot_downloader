@@ -113,10 +113,18 @@ class MangaScraper:
             for chapter_element in soup.select(".chapter-list .row"):
                 link = chapter_element.find("a")
                 if link:
+                    title = link.get("title")
+                    url = link.get("href")
+                    chapter_number_match = re.search(r"Chapter ([\d.]+)", title)
+                    chapter_number = float(chapter_number_match.group(1)) if chapter_number_match else 0.0
                     chapter_list.append({
-                        "title": link.get("title"),
-                        "url": link.get("href"),
+                        "title": title,
+                        "url": url,
+                        "number": chapter_number
                     })
+            
+            # Sort chapters by number in ascending order
+            chapter_list.sort(key=lambda x: x["number"])
             return chapter_list
         except requests.exceptions.RequestException as e:
             if self.verbose:

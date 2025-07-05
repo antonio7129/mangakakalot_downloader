@@ -239,17 +239,30 @@ class MangaDownloaderGUI(QMainWindow):
             return
 
         try:
-            start_chapter = int(start_chapter_text)
-            end_chapter = int(end_chapter_text)
+            start_chapter = float(start_chapter_text)
+            end_chapter = float(end_chapter_text)
         except ValueError:
             self.log_message("Invalid chapter range. Please enter numbers only.")
             return
 
-        if start_chapter > end_chapter or start_chapter < 1 or end_chapter > len(self.chapters):
-            self.log_message(f"Invalid chapter range. Please select a range between 1 and {len(self.chapters)}.")
+        start_index = -1
+        end_index = -1
+
+        for i, chapter in enumerate(self.chapters):
+            if chapter["number"] >= start_chapter and start_index == -1:
+                start_index = i
+            if chapter["number"] >= end_chapter:
+                end_index = i
+                break
+        
+        if end_index == -1:
+            end_index = len(self.chapters) -1
+
+        if start_index == -1 or start_index > end_index:
+            self.log_message("Invalid chapter range.")
             return
 
-        chapters_to_download = self.chapters[start_chapter - 1:end_chapter]
+        chapters_to_download = self.chapters[start_index:end_index + 1]
         manga_title = self.scraper.get_manga_title(self.search_widget.manga_url_input.text())
 
         self.log_message(f"Downloading chapters {start_chapter}-{end_chapter} of {manga_title}...")
@@ -279,31 +292,40 @@ class MangaDownloaderGUI(QMainWindow):
         self.download_widget.cancel_button.setEnabled(True)
 
     def _download_all_chapters_threaded(self, manga_title, chapters):
+        import concurrent.futures
         total_chapters = len(chapters)
-        for i, chapter in enumerate(chapters):
-            if not self.worker._is_running:
-                self.worker.log.emit("Download of all chapters cancelled.")
-                break
-            
-            chapter_title = chapter["title"]
-            chapter_url = chapter["url"]
-            self.worker.log.emit(f"Downloading chapter {i+1}/{total_chapters}: {chapter_title}...")
-            
-            downloader = MangaDownloader(
-                manga_title=manga_title,
-                chapter_title=chapter_title,
-                chapter_url=chapter_url,
-                output_dir=self.settings.get("output_dir"),
-                concurrency=self.settings.get("concurrency"),
-                to_pdf=self.settings.get("to_pdf"),
-                delete_images=self.settings.get("delete_images"),
-                verbose=True,
-                progress_callback=self.progress_bar.setValue
-            )
-            downloader.download_chapter()
-            
-            progress = int(((i + 1) / total_chapters) * 100)
-            self.progress_bar.setValue(progress)
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.settings.get("concurrency", 5)) as executor:
+            futures = []
+            for chapter in chapters:
+                if not self.worker._is_running:
+                    self.worker.log.emit("Download of all chapters cancelled.")
+                    break
+                
+                chapter_title = chapter["title"]
+                chapter_url = chapter["url"]
+                self.worker.log.emit(f"Queueing chapter {chapter_title} for download...")
+                
+                downloader = MangaDownloader(
+                    manga_title=manga_title,
+                    chapter_title=chapter_title,
+                    chapter_url=chapter_url,
+                    output_dir=self.settings.get("output_dir"),
+                    concurrency=self.settings.get("concurrency"),
+                    to_pdf=self.settings.get("to_pdf"),
+                    delete_images=self.settings.get("delete_images"),
+                    verbose=True,
+                    progress_callback=self.progress_bar.setValue
+                )
+                futures.append(executor.submit(downloader.download_chapter))
+
+            for i, future in enumerate(concurrent.futures.as_completed(futures)):
+                try:
+                    future.result()
+                    progress = int(((i + 1) / total_chapters) * 100)
+                    self.progress_bar.setValue(progress)
+                except Exception as e:
+                    self.worker.log.emit(f"An error occurred during chapter download: {e}")
 
         if self.worker._is_running:
             self.worker.log.emit("All chapters downloaded.")
