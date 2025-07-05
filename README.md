@@ -1,6 +1,6 @@
 # Manga Downloader
 
-A Python application for searching and downloading manga from various online sources, featuring both a command-line interface (CLI) and a graphical user interface (GUI).
+A powerful Python program designed to simplify the process of downloading manga from popular online sources. This application supports `mangakakalot.gg`, `natomanga.com`, and `nelomanga.net`, offering both a command-line interface (CLI) for automation and a user-friendly graphical user interface (GUI) for easy navigation.
 
 ## Features
 
@@ -39,7 +39,7 @@ The application can be used via both a Command-Line Interface (CLI) and a Graphi
 
 ### Command-Line Interface (CLI)
 
-For detailed CLI usage, refer to `manga_downloader/cli/usage.md`.
+For detailed CLI usage, refer to [manga_downloader/cli/usage.md](manga_downloader/cli/usage.md).
 
 **Basic Search Example:**
 ```bash
@@ -53,7 +53,7 @@ python -m manga_downloader.cli.main download --manga-url "https://www.natomanga.
 
 ### Graphical User Interface (GUI)
 
-For detailed GUI usage, refer to `manga_downloader/gui/USAGE.md`.
+For detailed GUI usage, refer to [manga_downloader/gui/USAGE.md](manga_downloader/gui/USAGE.md).
 
 **Launch the GUI:**
 ```bash
@@ -88,4 +88,4 @@ Contributions are welcome! Please feel free to open issues or submit pull reques
 
 ## License
 
-[Specify your project's license here, e.g., MIT License]
+This project is licensed under the [MIT License](LICENSE).
