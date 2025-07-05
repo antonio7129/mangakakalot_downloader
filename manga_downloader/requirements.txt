@@ -1,0 +1,10 @@
+requests
+beautifulsoup4
+rich
+typer
+PyQt6
+ttkbootstrap
+tqdm
+fake_useragent
+lxml
+playwright
