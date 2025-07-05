@@ -29,8 +29,64 @@ class MangaScraper:
             raise ValueError(f"Invalid site name: {site_name}")
 
     def search_manga(self, title):
-        # This will be implemented later
-        pass
+        search_results = []
+        try:
+            headers = HEADERS.copy()
+            headers["Referer"] = self.base_url
+            
+            if self.site_name == "mangakakalot" or self.site_name == "natomanga":
+                search_url = f"{self.base_url}/search/story/{title.replace(' ', '_')}"
+            else:
+                search_url = f"{self.base_url}/search?q={title.replace(' ', '+')}"
+
+            self.console.print(f"[info]Searching for '{title}' on {self.site_name} at {search_url}[/info]")
+            response = requests.get(search_url, headers=headers)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.content, "lxml")
+
+            # --- Parsing logic for search results ---
+            # This part might need adjustment based on the actual HTML structure of each site's search results.
+            # Common patterns:
+            # - mangakakalot.gg: div.story_item, h3 a
+            # - natomanga.com: div.manga-item, a
+            # - nelomanga.net: div.manga-item, a
+
+            if self.site_name == "mangakakalot" or self.site_name == "natomanga":
+                for item in soup.select("div.story_item"):
+                    link_element = item.find("h3", class_="story_name").find("a")
+                    if link_element:
+                        title_text = link_element.text.strip()
+                        url = urljoin(self.base_url, link_element.get("href"))
+                        search_results.append({"title": title_text, "url": url})
+            elif self.site_name == "nelomanga":
+                for item in soup.select("div.manga-item"): # Assuming a common class for manga items
+                    link_element = item.find("a")
+                    if link_element and link_element.get("title"): # Assuming title is in the 'title' attribute of the link
+                        title_text = link_element.get("title").strip()
+                        url = urljoin(self.base_url, link_element.get("href"))
+                        search_results.append({"title": title_text, "url": url})
+            else:
+                self.console.print(f"[warning]Search parsing not specifically implemented for {self.site_name}. Attempting generic parsing.[/warning]")
+                # Generic parsing attempt: look for any link that might represent a manga
+                for link_element in soup.find_all("a", href=True):
+                    href = link_element.get("href")
+                    text = link_element.get_text(strip=True)
+                    if text and "/manga/" in href: # Simple heuristic
+                        search_results.append({"title": text, "url": urljoin(self.base_url, href)})
+                        if len(search_results) > 20: # Limit results for generic search
+                            break
+
+            if not search_results and self.verbose:
+                self.console.print(f"[warning]No specific search results found for '{title}' on {self.site_name}. Check HTML structure.[/warning]")
+
+        except requests.exceptions.RequestException as e:
+            if self.verbose:
+                self.console.print(f"[danger]Error during manga search on {self.site_name}: {e}[/danger]")
+        except Exception as e:
+            if self.verbose:
+                self.console.print(f"[danger]An unexpected error occurred during search: {e}[/danger]")
+        
+        return search_results
 
     def get_manga_title(self, manga_url):
         try:
