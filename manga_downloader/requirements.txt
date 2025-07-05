@@ -8,3 +8,5 @@ tqdm
 fake_useragent
 lxml
 playwright
+Pillow
+qt-material
