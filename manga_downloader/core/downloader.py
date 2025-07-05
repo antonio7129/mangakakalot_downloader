@@ -122,7 +122,7 @@ class MangaDownloader:
 
         pdf_path = os.path.join(self.download_dir, f"{self.manga_title} - {self.chapter_title}.pdf")
         try:
-            images[0].save(pdf_path, save_all=True, append_images=images[1:], quality=100)
+            images[0].save(pdf_path, save_all=True, append_images=images[1:], resolution=100.0)
             self.console.print(f"[success]Converted chapter to PDF: {pdf_path}[/success]")
         except Exception as e:
             self.console.print(f"[danger]Failed to convert to PDF: {e}[/danger]")
