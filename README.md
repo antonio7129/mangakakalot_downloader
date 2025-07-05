@@ -35,7 +35,7 @@ A powerful Python program designed to simplify the process of downloading manga 
 
 ## Usage
 
-The application can be used via both a Command-Line Interface (CLI) and a Graphical User Interface (GUI).
+After completing the installation steps and activating your virtual environment, ensure your current working directory is the root of the cloned repository (`mangakakalot`). From this directory, you can run the application using either the Command-Line Interface (CLI) or the Graphical User Interface (GUI).
 
 ### Command-Line Interface (CLI)
 
