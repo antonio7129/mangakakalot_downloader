@@ -41,12 +41,26 @@ def download(
             parts = chapter_range.split('-')
             if verbose:
                 console.print(f"[info]Debug: parts={parts}[/info]")
-            start, end = map(int, parts)
-            if start > end or start < 1 or end > len(chapters):
-                console.print(f"[danger]Invalid chapter range. Please use a range like '1-10' within the available chapters (1-{len(chapters)}).[/danger]")
+            start_float, end_float = map(float, parts)
+
+            start_index = -1
+            end_index = -1
+
+            for i, chapter in enumerate(chapters):
+                if chapter["number"] >= start_float and start_index == -1:
+                    start_index = i
+                if chapter["number"] >= end_float:
+                    end_index = i
+                    break
+            
+            if end_index == -1:
+                end_index = len(chapters) - 1
+
+            if start_index == -1 or start_index > end_index:
+                console.print(f"[danger]Invalid chapter range. Please use a range like '1-10' within the available chapters (e.g., 0-{len(chapters)-1} if chapter 0 exists).[/danger]")
                 return
-            chapters_to_download = chapters[len(chapters) - end : len(chapters) - start + 1]
-            chapters_to_download.reverse() # To download in ascending order
+            
+            chapters_to_download = chapters[start_index : end_index + 1]
         except ValueError:
             console.print("[danger]Invalid chapter range format. Please use 'start-end' (e.g., '5-10').[/danger]")
             return
