@@ -20,3 +20,6 @@ HEADERS = {
 }
 
 # Download settings
+
+# Path to the cookies file
+COOKIES_FILE = "manga_downloader/core/cookies.json"

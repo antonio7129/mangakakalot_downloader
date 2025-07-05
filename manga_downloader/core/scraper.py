@@ -3,9 +3,11 @@
 import time
 import requests
 from bs4 import BeautifulSoup
-from .config import BASE_URLS, HEADERS
+from .config import BASE_URLS, HEADERS, COOKIES_FILE
 import re
 from urllib.parse import urljoin
+import json
+import os
 
 from rich.console import Console
 from rich.theme import Theme
@@ -28,19 +30,31 @@ class MangaScraper:
         if not self.base_url:
             raise ValueError(f"Invalid site name: {site_name}")
 
+    def _load_cookies(self):
+        if os.path.exists(COOKIES_FILE):
+            with open(COOKIES_FILE, 'r') as f:
+                return json.load(f).get(self.site_name, {})
+        return {}
+
     def search_manga(self, title):
         search_results = []
         try:
             headers = HEADERS.copy()
             headers["Referer"] = self.base_url
             
-            if self.site_name == "mangakakalot" or self.site_name == "natomanga":
+            cookies = {}
+            if self.site_name == "nelomanga":
+                cookies = self._load_cookies()
+                if not cookies:
+                    self.console.print(f"[warning]No cookies found for {self.site_name}. Search might fail due to Cloudflare protection.[/warning]")
+
+            if self.site_name == "mangakakalot" or self.site_name == "natomanga" or self.site_name == "nelomanga":
                 search_url = f"{self.base_url}/search/story/{title.replace(' ', '_')}"
             else:
                 search_url = f"{self.base_url}/search?q={title.replace(' ', '+')}"
 
             self.console.print(f"[info]Searching for '{title}' on {self.site_name} at {search_url}[/info]")
-            response = requests.get(search_url, headers=headers)
+            response = requests.get(search_url, headers=headers, cookies=cookies)
             response.raise_for_status()
             soup = BeautifulSoup(response.content, "lxml")
 
@@ -51,18 +65,11 @@ class MangaScraper:
             # - natomanga.com: div.manga-item, a
             # - nelomanga.net: div.manga-item, a
 
-            if self.site_name == "mangakakalot" or self.site_name == "natomanga":
+            if self.site_name == "mangakakalot" or self.site_name == "natomanga" or self.site_name == "nelomanga":
                 for item in soup.select("div.story_item"):
                     link_element = item.find("h3", class_="story_name").find("a")
                     if link_element:
                         title_text = link_element.text.strip()
-                        url = urljoin(self.base_url, link_element.get("href"))
-                        search_results.append({"title": title_text, "url": url})
-            elif self.site_name == "nelomanga":
-                for item in soup.select("div.manga-item"): # Assuming a common class for manga items
-                    link_element = item.find("a")
-                    if link_element and link_element.get("title"): # Assuming title is in the 'title' attribute of the link
-                        title_text = link_element.get("title").strip()
                         url = urljoin(self.base_url, link_element.get("href"))
                         search_results.append({"title": title_text, "url": url})
             else:
@@ -92,7 +99,12 @@ class MangaScraper:
         try:
             headers = HEADERS.copy()
             headers["Referer"] = self.base_url
-            response = requests.get(manga_url, headers=headers)
+            
+            cookies = {}
+            if self.site_name == "nelomanga":
+                cookies = self._load_cookies()
+
+            response = requests.get(manga_url, headers=headers, cookies=cookies)
             response.raise_for_status()
             soup = BeautifulSoup(response.content, "lxml")
             title_element = soup.find("div", class_="manga-info-content").find("h1")
@@ -106,7 +118,12 @@ class MangaScraper:
         try:
             headers = HEADERS.copy()
             headers["Referer"] = self.base_url
-            response = requests.get(manga_url, headers=headers)
+            
+            cookies = {}
+            if self.site_name == "nelomanga":
+                cookies = self._load_cookies()
+
+            response = requests.get(manga_url, headers=headers, cookies=cookies)
             response.raise_for_status()
             soup = BeautifulSoup(response.content, "lxml")
             chapter_list = []
