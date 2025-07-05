@@ -48,7 +48,7 @@ python -m manga_downloader.cli.main search "solo leveling" --site mangakakalot
 
 **Download Example:**
 ```bash
-python -m manga_downloader.cli.main download "https://mangakakalot.gg/manga/solo-leveling" --chapters-range "1-5"
+python -m manga_downloader.cli.main download --manga-url "https://www.natomanga.com/manga/immortal-undertaker" --chapter-range "1-5"
 ```
 
 ### Graphical User Interface (GUI)
