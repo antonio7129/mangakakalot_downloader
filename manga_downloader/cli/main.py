@@ -89,5 +89,28 @@ def list_chapters(manga_url: str = typer.Option(..., "--manga-url", help="The UR
     for i, chapter in enumerate(reversed(chapters), 1):
         console.print(f"  [chapter]{i}. {chapter['title']}[/chapter]")
 
+@app.command()
+def search(
+    title: str = typer.Argument(..., help="The title of the manga to search for."),
+    site: str = typer.Option("natomanga", "--site", help="Optional: The manga website to search on. Default is 'natomanga'."),
+    verbose: bool = typer.Option(False, "--verbose", help="Optional: Enable verbose output for detailed progress and debugging."),
+):
+    """
+    Search for a manga by title on a specified website.
+    """
+    scraper = MangaScraper(site, verbose=verbose)
+    console.print(f"[info]Searching for '{title}' on {site}...[/info]")
+    search_results = scraper.search_manga(title)
+
+    if search_results:
+        console.print(f"[success]Search completed. Found {len(search_results)} results:[/success]")
+        for i, result in enumerate(search_results, 1):
+            console.print(f"  [info]{i}. Title: {result['title']}[/info]")
+            console.print(f"     [info]URL: {result['url']}[/info]")
+    else:
+        console.print("[warning]Search completed. Found 0 results.[/warning]")
+    
+    console.print("[success]Search process finished.[/success]")
+
 if __name__ == "__main__":
     app()
