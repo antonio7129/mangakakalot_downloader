@@ -7,10 +7,24 @@ from .config import BASE_URLS, HEADERS
 import re
 from urllib.parse import urljoin
 
+from rich.console import Console
+from rich.theme import Theme
+
+custom_theme = Theme({
+    "info": "dim cyan",
+    "warning": "magenta",
+    "danger": "bold red",
+    "success": "bold green",
+    "chapter": "bold blue",
+})
+console = Console(theme=custom_theme)
+
 class MangaScraper:
-    def __init__(self, site_name):
+    def __init__(self, site_name, verbose=False, console=console):
         self.site_name = site_name
         self.base_url = BASE_URLS.get(site_name)
+        self.verbose = verbose
+        self.console = console
         if not self.base_url:
             raise ValueError(f"Invalid site name: {site_name}")
 
@@ -28,7 +42,8 @@ class MangaScraper:
             title_element = soup.find("div", class_="manga-info-content").find("h1")
             return title_element.text.strip() if title_element else "Unknown Title"
         except requests.exceptions.RequestException as e:
-            print(f"Error fetching manga title: {e}")
+            if self.verbose:
+                self.console.print(f"[danger]Error fetching manga title: {e}[/danger]")
             return "Unknown Title"
 
     def get_chapters(self, manga_url):
@@ -48,7 +63,8 @@ class MangaScraper:
                     })
             return chapter_list
         except requests.exceptions.RequestException as e:
-            print(f"Error fetching chapters: {e}")
+            if self.verbose:
+                print(f"Error fetching chapters: {e}")
             return []
 
     def get_chapter_images(self, chapter_url):

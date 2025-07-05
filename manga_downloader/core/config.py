@@ -20,4 +20,3 @@ HEADERS = {
 }
 
 # Download settings
-DOWNLOAD_PATH = "manga_downloads"  # Root folder for downloaded manga

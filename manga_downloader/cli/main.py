@@ -1,32 +1,83 @@
 # cli/main.py
 
 import typer
+from rich.console import Console
+from rich.theme import Theme
 from manga_downloader.core.scraper import MangaScraper
 from manga_downloader.core.downloader import MangaDownloader
+
+custom_theme = Theme({
+    "info": "dim cyan",
+    "warning": "magenta",
+    "danger": "bold red",
+    "success": "bold green",
+    "chapter": "bold blue",
+})
+console = Console(theme=custom_theme)
 
 app = typer.Typer()
 
 @app.command()
-def download(manga_url: str = typer.Option(..., "--manga-url", help="The URL of the manga to download."), chapter: int = typer.Option(..., "--chapter", help="The chapter number to download.")):
+def download(
+    manga_url: str = typer.Option(..., "--manga-url", help="The URL of the manga to download."),
+    chapter_range: str = typer.Option(None, "--chapter-range", help="Optional: Range of chapters to download (e.g., '5-10'). If omitted, all chapters will be downloaded."),
+    output_dir: str = typer.Option(None, "--output-dir", help="Optional: Directory to save the downloaded manga. Defaults to a predefined path."),
+    concurrency: int = typer.Option(5, "--concurrency", help="Optional: Maximum number of concurrent image downloads. Default is 5."),
+    to_pdf: bool = typer.Option(False, "--to-pdf", help="Optional: Convert downloaded chapter to PDF format."),
+    verbose: bool = typer.Option(False, "--verbose", help="Optional: Enable verbose output for detailed progress and debugging."),
+):
     """
     Download a specific chapter of a manga.
     """
-    scraper = MangaScraper("natomanga")
+    scraper = MangaScraper("natomanga", verbose=verbose)
     manga_title = scraper.get_manga_title(manga_url.strip('"'))
     chapters = scraper.get_chapters(manga_url.strip('"'))
 
-    if chapter > len(chapters) or chapter < 1:
-        print(f"Invalid chapter number. Please choose a chapter between 1 and {len(chapters)}.")
+    if chapter_range:
+        try:
+            chapter_range = chapter_range.strip('"')
+            parts = chapter_range.split('-')
+            if verbose:
+                console.print(f"[info]Debug: parts={parts}[/info]")
+            start, end = map(int, parts)
+            if start > end or start < 1 or end > len(chapters):
+                console.print(f"[danger]Invalid chapter range. Please use a range like '1-10' within the available chapters (1-{len(chapters)}).[/danger]")
+                return
+            chapters_to_download = chapters[len(chapters) - end : len(chapters) - start + 1]
+            chapters_to_download.reverse() # To download in ascending order
+        except ValueError:
+            console.print("[danger]Invalid chapter range format. Please use 'start-end' (e.g., '5-10').[/danger]")
+            return
+    else:
+        chapters_to_download = chapters # Download all chapters if no range is specified
+
+    if not chapters_to_download:
+        console.print("[warning]No chapters to download.[/warning]")
         return
 
-    # Chapters are usually listed in descending order, so we need to adjust the index
-    chapter_to_download = chapters[len(chapters) - chapter]
+    for chapter_data in chapters_to_download:
+        console.print(f"[info]Downloading {manga_title} - {chapter_data['title']}[/info]")
+        downloader = MangaDownloader(manga_title, chapter_data['title'], chapter_data['url'], output_dir.strip('"') if output_dir else None, concurrency, to_pdf, verbose, console=console)
+        downloader.download_chapter()
+        console.print(f"[success]Finished downloading {chapter_data['title']}[/success]")
+    console.print("[success]All selected chapters downloaded![/success]")
 
-    print(f"Downloading {manga_title} - {chapter_to_download['title']}")
+@app.command()
+def list_chapters(manga_url: str = typer.Option(..., "--manga-url", help="The URL of the manga to list chapters for."), verbose: bool = typer.Option(False, "--verbose", help="Optional: Enable verbose output.")):
+    """
+    List all available chapters for a given manga URL.
+    """
+    scraper = MangaScraper("natomanga", verbose=verbose) # Assuming "natomanga" for now
+    manga_title = scraper.get_manga_title(manga_url.strip('"'))
+    chapters = scraper.get_chapters(manga_url.strip('"'))
 
-    downloader = MangaDownloader(manga_title, chapter_to_download['title'], chapter_to_download['url'])
-    downloader.download_chapter()
-    print("Download complete!")
+    if not chapters:
+        console.print(f"[warning]No chapters found for {manga_title} at {manga_url}[/warning]")
+        return
+
+    console.print(f"\n[info]Chapters for {manga_title}:[/info]")
+    for i, chapter in enumerate(reversed(chapters), 1):
+        console.print(f"  [chapter]{i}. {chapter['title']}[/chapter]")
 
 if __name__ == "__main__":
     app()
