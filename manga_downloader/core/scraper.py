@@ -115,8 +115,22 @@ class MangaScraper:
                 if link:
                     title = link.get("title")
                     url = link.get("href")
-                    chapter_number_match = re.search(r"Chapter ([\d.]+)", title)
-                    chapter_number = float(chapter_number_match.group(1)) if chapter_number_match else 0.0
+                    
+                    # More flexible regex to capture numbers (integers or floats)
+                    # It tries to find a number that might be preceded by "Chapter " or just a standalone number.
+                    chapter_number_match = re.search(r"(?:Chapter\s*)?([\d.]+)", title, re.IGNORECASE)
+                    
+                    chapter_number = 0.0
+                    if chapter_number_match:
+                        try:
+                            chapter_number = float(chapter_number_match.group(1))
+                        except ValueError:
+                            # If conversion to float fails, assign a very high number to push it to the end
+                            chapter_number = float('inf') 
+                    else:
+                        # If no number is found, assign a very high number
+                        chapter_number = float('inf')
+
                     chapter_list.append({
                         "title": title,
                         "url": url,
